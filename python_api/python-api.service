@@ -1,0 +1,9 @@
+[Unit]
+Description=Local Python User & Group HTTP API
+
+[Service]
+ExecStart=/usr/bin/python3 /home/user/CPSC222/python_api/api_server.py
+Restart=always
+
+[Install]
+WantedBy=default.target
