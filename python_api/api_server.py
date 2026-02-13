@@ -9,24 +9,30 @@ class APIHandler(BaseHTTPRequestHandler):
     USERNAME = "test"
     PASSWORD = "abcABC123456"
 
-    def do_POST(self):
+    def do_GET(self):
         # Check authentication
         auth_header = self.headers.get("Authorization")
         if not auth_header or not auth_header.startswith("Basic "):
             self.send_response(401)
-            self.send_header("WWW-Authenticate", 'Basic realm="Login Required"')
+            self.send_header("WWW-Authenticate", 'Basic realm="Login required"')
             self.end_headers()
             return
 
-        encoded = auth_header.split()[1]
-        decoded = b64decode(encoded).decode()
-        username, password = decoded.split(":")
+        try:
+            encoded = auth_header.split()[1]
+            decoded = b64decode(encoded).decode()
+            username, password = decoded.split(":")
+        except Exception:
+            self.send_response(401)
+            self.end_headers()
+            return
+
         if username != self.USERNAME or password != self.PASSWORD:
             self.send_response(403)
             self.end_headers()
             return
 
-
+        # Determine which API path
         if self.path == "/api/users":
             data = {str(i): u.pw_name for i, u in enumerate(pwd.getpwall())}
         elif self.path == "/api/groups":
@@ -36,6 +42,7 @@ class APIHandler(BaseHTTPRequestHandler):
             self.end_headers()
             return
 
+        # Send JSON response
         self.send_response(200)
         self.send_header("Content-Type", "application/json")
         self.end_headers()
@@ -46,4 +53,3 @@ if __name__ == "__main__":
     server = HTTPServer(("", 3000), APIHandler)
     print("Server running on port 3000...")
     server.serve_forever()
-
