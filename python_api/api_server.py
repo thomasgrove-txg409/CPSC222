@@ -50,6 +50,6 @@ class APIHandler(BaseHTTPRequestHandler):
 
 
 if __name__ == "__main__":
-    server = HTTPServer(("", 3000), APIHandler)
+    server = HTTPServer(("", 80), APIHandler)
     print("Server running on port 3000...")
     server.serve_forever()
