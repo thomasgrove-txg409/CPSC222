@@ -86,7 +86,7 @@ exit();
 echo "<h2>Welcome, ".$_SESSION["user"]."! <a href='final_logout.php'>(Log Out)</a></h2>";
 
 
-if(isset($_GET["page"]) && $_GET["page"] == "adminpanel0")
+if(isset($_GET["page"]) && $_GET["page"] == "adminpanel")
 {
 echo "<a href='final.php'>< Back to Dashboard</a><br><br>";
 echo "<h3>About the Author</h3>";
